@@ -2,7 +2,6 @@
 //  AppDelegate.swift
 //  MemeMe
 //
-//  Created by Mac mini on 28/06/2018.
 //  Copyright © 2018 Rodrigo. All rights reserved.
 //
 
