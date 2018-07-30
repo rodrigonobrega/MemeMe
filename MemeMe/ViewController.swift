@@ -134,19 +134,9 @@ UINavigationControllerDelegate, UITextFieldDelegate {
         
         activityController.completionWithItemsHandler = {
             activity, success, items, error in
-            
-            let alertController = UIAlertController(title: "Save", message: "Do you like to save ?", preferredStyle: .alert)
-            
-            let saveAction = UIAlertAction(title: "Save", style: .default) { (action:UIAlertAction) in
-                if success {
-                    self.save()
-                }
+            if success {
+                self.save()
             }
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-            
-            alertController.addAction(saveAction)
-            alertController.addAction(cancelAction)
-            self.present(alertController, animated: true, completion: nil)
         }
         return activityController
     }
@@ -155,10 +145,22 @@ UINavigationControllerDelegate, UITextFieldDelegate {
     // MARK: Save
     func save() {
         if let selectedImage = imagePickerView.image {
-            let topText = self.topTextField.text
-            let bottomText = self.bottomTextField.text
-            let memeObject = Meme(topTexFieldText: topText, bottomTextFieldText: bottomText, originalImage: selectedImage, memedImage: memedImage!)
-            saveMemeObject(memeObject)
+            
+            let alertController = UIAlertController(title: "Save", message: "Do you like to save ?", preferredStyle: .alert)
+            
+            let saveAction = UIAlertAction(title: "Save", style: .default) { (action:UIAlertAction) in
+                let topText = self.topTextField.text
+                let bottomText = self.bottomTextField.text
+                let memeObject = Meme(topTexFieldText: topText, bottomTextFieldText: bottomText, originalImage: selectedImage, memedImage: self.memedImage!)
+                self.saveMemeObject(memeObject)
+            }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+            
+            alertController.addAction(saveAction)
+            alertController.addAction(cancelAction)
+            self.present(alertController, animated: true, completion: nil)
+            
+            
         }
     }
     
@@ -168,9 +170,11 @@ UINavigationControllerDelegate, UITextFieldDelegate {
         setupLayoutToSave()
         
         let imageData = UIImagePNGRepresentation(memeToSave.memedImage)
-        let compressedImag = UIImage(data: imageData!)
-        UIImageWriteToSavedPhotosAlbum(compressedImag!, nil, nil, nil)
-        
+        let dataImage = UIImage(data: imageData!)
+        UIImageWriteToSavedPhotosAlbum(dataImage!, nil, nil, nil)
+        UIImageWriteToSavedPhotosAlbum(dataImage!, self, #selector(imagePickerController(_:didFinishPickingMediaWithInfo:)), nil)
+
+    
         setupLayoutDefault()
     }
    
