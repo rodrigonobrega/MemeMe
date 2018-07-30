@@ -100,8 +100,9 @@ UINavigationControllerDelegate, UITextFieldDelegate {
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
         self.topToolBar.isHidden = false
         self.bottomToolBar.isHidden = false
-        self.topTextField.attributedText = NSAttributedString(string: "TOP", attributes: defaultTextAttributes)
-        self.bottomTextField.attributedText = NSAttributedString(string: "BOTTOM", attributes: defaultTextAttributes)
+        
+        self.topTextField.attributedText = NSAttributedString(string: self.topTextField.text!, attributes: defaultTextAttributes)
+        self.bottomTextField.attributedText = NSAttributedString(string: self.bottomTextField.text!, attributes: defaultTextAttributes)
     }
     
     func setupLayoutToSave() {
@@ -234,9 +235,7 @@ extension ViewController {
     
     func getKeyboardHeight(_ notification:Notification) -> CGFloat {
         let userInfo = notification.userInfo
-        
-        let keyboardSize = (notification.userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
-
-        return keyboardSize.height
+        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
+        return keyboardSize.cgRectValue.height
     }
 }
