@@ -111,13 +111,8 @@ UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
         self.topToolBar.isHidden = false
         self.bottomToolBar.isHidden = false
-        
         self.topTextField.attributedText = NSAttributedString(string: self.topTextField.text!, attributes: defaultTextAttributes)
         self.bottomTextField.attributedText = NSAttributedString(string: self.bottomTextField.text!, attributes: defaultTextAttributes)
-    }
-    
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return self.imagePickerView
     }
     
     func setupLayoutToSave() {
@@ -141,11 +136,16 @@ extension ViewController {
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
+    
+    // MARK: UIScrollViewDelegate
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return self.imagePickerView
+    }
 }
 
 extension ViewController {
     
-    // MARK: UITextFieldDelegate, NotificationCenter
+    // MARK: UITextFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true;
@@ -160,7 +160,7 @@ extension ViewController {
 
 extension ViewController {
     
-    // MARK: NotificationCenter and keyboard methods
+    // MARK: NotificationCenter methods
     func subscribeToKeyboardNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
@@ -171,6 +171,7 @@ extension ViewController {
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
     }
     
+    // MARK: keyboard methods
     @objc func keyboardWillShow(_ notification:Notification) {
         if bottomTextField.isFirstResponder {
             view.frame.origin.y -= getKeyboardHeight(notification)
