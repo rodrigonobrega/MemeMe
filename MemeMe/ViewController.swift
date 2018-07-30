@@ -10,6 +10,7 @@ import UIKit
 class ViewController: UIViewController, UIImagePickerControllerDelegate,
 UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
 
+    // MARK: @IBOutlet and variables
     @IBOutlet weak var scrollImageView: UIScrollView!
     @IBOutlet weak var bottomToolBar: UIToolbar!
     @IBOutlet weak var topToolBar: UIToolbar!
@@ -19,30 +20,36 @@ UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
     @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var bottomTextField: UITextField!
     var memedImage:UIImage?
-    static let textFont = "HelveticaNeue-CondensedBlack"
-    static let fontSize:CGFloat = 54.0
-    static let stroke = -8.0
     
     let defaultTextAttributes:[NSAttributedStringKey : Any] = [
         NSAttributedStringKey.strokeColor : UIColor.black,
         NSAttributedStringKey.foregroundColor : UIColor.white,
-        NSAttributedStringKey.font: UIFont(name: ViewController.textFont, size: fontSize)!,
-        NSAttributedStringKey.strokeWidth : stroke
+        NSAttributedStringKey.font: UIFont(name: MememeConstants.textFont, size: MememeConstants.fontSize)!,
+        NSAttributedStringKey.strokeWidth : MememeConstants.stroke
     ]
 
     let typingTextAttributes:[String : Any] = [
         NSAttributedStringKey.strokeColor.rawValue : UIColor.black,
         NSAttributedStringKey.foregroundColor.rawValue : UIColor.white,
-        NSAttributedStringKey.font.rawValue : UIFont(name: ViewController.textFont, size: fontSize)!,
-        NSAttributedStringKey.strokeWidth.rawValue : stroke
+        NSAttributedStringKey.font.rawValue : UIFont(name: MememeConstants.textFont, size: MememeConstants.fontSize)!,
+        NSAttributedStringKey.strokeWidth.rawValue : MememeConstants.stroke
     ]
     
-    // MARK: Struct Meme used to save
+    // MARK: Struct Meme used to save and Struct constants values
     struct Meme {
         var topTexFieldText:String!
         var bottomTextFieldText:String!
         var originalImage: UIImage
         var memedImage: UIImage
+    }
+    
+    struct MememeConstants{
+        static let textFont = "HelveticaNeue-CondensedBlack"
+        static let messageActivityShare = "\nSharing my MemeMe"
+        static let fontSize:CGFloat = 54.0
+        static let stroke = -8.0
+        static let minimumZoomScale:CGFloat = 1.0
+        static let maximumZoomScale:CGFloat = 5.0
     }
     
     // MARK: Override UIViewController methods
@@ -54,7 +61,6 @@ UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
         super.viewDidLoad()
         self.shareButton.isEnabled = false
         setupLayoutDefault()
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -68,7 +74,7 @@ UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
         unsubscribeFromKeyboardNotifications()
     }
     
-    //MARK: @IBAction
+    //MARK: @IBAction methods
     @IBAction func cancelSaveImage(_ sender: Any) {
         self.setupLayoutDefault()
         self.imagePickerView.image  = UIImage()
@@ -95,14 +101,13 @@ UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
         present(imagePicker, animated: true, completion: nil)
     }
     
-    // MARK:SetupLauyout
+    // MARK: Configure Layout methods
     func setupLayoutDefault() {
         
         self.scrollImageView.delegate = self
-        
-        self.scrollImageView.minimumZoomScale = 1.0
-        self.scrollImageView.maximumZoomScale = 5.0
-
+        self.scrollImageView.minimumZoomScale = MememeConstants.minimumZoomScale
+        self.scrollImageView.maximumZoomScale = MememeConstants.maximumZoomScale
+        self.shareButton.isEnabled = false
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
         self.topToolBar.isHidden = false
         self.bottomToolBar.isHidden = false
@@ -118,34 +123,6 @@ UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
     func setupLayoutToSave() {
         self.topToolBar.isHidden = true
         self.bottomToolBar.isHidden = true
-    }
-    
-    func generateMemedImage() -> UIImage {
-        
-        setupLayoutToSave()
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
-        let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
-        
-        setupLayoutDefault()
-        
-        return memedImage
-    }
-   
-    
-    func showActivityController()  -> UIActivityViewController {
-        let message = "\nSharing my MemeMe"
-        
-        let objects:[AnyObject] = [message as AnyObject, memedImage!]
-        
-        let activityController = UIActivityViewController(activityItems: objects , applicationActivities: nil)
-        self.setupLayoutToSave()
-        activityController.completionWithItemsHandler = {
-            activity, success, items, error in
-            self.setupLayoutDefault()
-        }
-        return activityController
     }
    
 }
@@ -173,12 +150,17 @@ extension ViewController {
         textField.resignFirstResponder()
         return true;
     }
+    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         textField.typingAttributes = typingTextAttributes
         return true
     }
     
-    // MARK: NotificationCenter
+}
+
+extension ViewController {
+    
+    // MARK: NotificationCenter and keyboard methods
     func subscribeToKeyboardNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
@@ -205,5 +187,31 @@ extension ViewController {
         let userInfo = notification.userInfo
         let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
         return keyboardSize.cgRectValue.height
+    }
+    
+    // create a image to save
+    func generateMemedImage() -> UIImage {
+        
+        setupLayoutToSave()
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
+        let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
+        setupLayoutDefault()
+        
+        return memedImage
+    }
+    
+    // show a Activity View Controller to share image
+    func showActivityController()  -> UIActivityViewController {
+        let objects:[AnyObject] = [MememeConstants.messageActivityShare as AnyObject, memedImage!]
+        let activityController = UIActivityViewController(activityItems: objects , applicationActivities: nil)
+        self.setupLayoutToSave()
+        activityController.completionWithItemsHandler = {
+            activity, success, items, error in
+            self.setupLayoutDefault()
+        }
+        return activityController
     }
 }

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,20 +19,23 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mix-FP-c6H">
-                                <rect key="frame" x="16" y="20" width="343" height="647"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Z00-ty-in3">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="647"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                                         <color key="backgroundColor" red="0.14901960784313725" green="0.14901960784313725" blue="0.14901960784313725" alpha="1" colorSpace="calibratedRGB"/>
                                     </imageView>
                                 </subviews>
+                                <color key="backgroundColor" red="0.14901960784313725" green="0.14901960784313725" blue="0.14901960784313725" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="Z00-ty-in3" secondAttribute="trailing" id="0h7-u0-C1o"/>
                                     <constraint firstItem="Z00-ty-in3" firstAttribute="centerX" secondItem="Mix-FP-c6H" secondAttribute="centerX" id="3zX-fm-5NQ"/>
                                     <constraint firstItem="Z00-ty-in3" firstAttribute="leading" secondItem="Mix-FP-c6H" secondAttribute="leading" id="99z-Ua-6bJ"/>
                                     <constraint firstItem="Z00-ty-in3" firstAttribute="top" secondItem="Mix-FP-c6H" secondAttribute="top" id="DtF-yF-n4u"/>
+                                    <constraint firstAttribute="trailing" secondItem="Z00-ty-in3" secondAttribute="trailing" id="L8A-Bq-yhf"/>
                                     <constraint firstItem="Z00-ty-in3" firstAttribute="centerY" secondItem="Mix-FP-c6H" secondAttribute="centerY" id="Lev-R9-44v"/>
                                     <constraint firstAttribute="bottom" secondItem="Z00-ty-in3" secondAttribute="bottom" id="lRm-9E-Slh"/>
+                                    <constraint firstItem="Z00-ty-in3" firstAttribute="leading" secondItem="Mix-FP-c6H" secondAttribute="leading" id="wRS-gJ-9AA"/>
                                 </constraints>
                             </scrollView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Bh-Bo-6kR">
@@ -97,10 +99,11 @@
                             <constraint firstItem="8Bh-Bo-6kR" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="26o-NE-Fzu"/>
                             <constraint firstItem="vft-So-gx7" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="3h1-fH-2vp"/>
                             <constraint firstItem="XdM-Gz-P9J" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="4fc-WR-FId"/>
-                            <constraint firstItem="Mix-FP-c6H" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="9UR-eW-OWu"/>
                             <constraint firstItem="vft-So-gx7" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="EXx-zO-Mcn"/>
                             <constraint firstItem="vft-So-gx7" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="JBz-pI-Ee1"/>
                             <constraint firstItem="OBp-Vn-cVI" firstAttribute="top" secondItem="8Bh-Bo-6kR" secondAttribute="bottom" constant="16" id="LYv-eu-dgN"/>
+                            <constraint firstItem="Mix-FP-c6H" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="PhU-Aw-vbO"/>
+                            <constraint firstItem="Mix-FP-c6H" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="TUx-Sq-JRt"/>
                             <constraint firstItem="Mix-FP-c6H" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="VBY-Hz-IIB"/>
                             <constraint firstItem="8Bh-Bo-6kR" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="XJy-To-of3"/>
                             <constraint firstItem="vft-So-gx7" firstAttribute="top" secondItem="XdM-Gz-P9J" secondAttribute="bottom" constant="16" id="XXr-nV-M6j"/>
