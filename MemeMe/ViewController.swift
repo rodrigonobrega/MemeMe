@@ -203,11 +203,11 @@ extension ViewController {
         return true
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        textField.textAlignment = .center
-        textField.contentVerticalAlignment = .center
-        textField.contentHorizontalAlignment = .center
-    }
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        textField.textAlignment = .center
+//        textField.contentVerticalAlignment = .center
+//        textField.contentHorizontalAlignment = .center
+//    }
     
     // MARK: NotificationCenter
     func subscribeToKeyboardNotifications() {
@@ -217,6 +217,7 @@ extension ViewController {
     
     func unsubscribeFromKeyboardNotifications() {
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
     }
     
     @objc func keyboardWillShow(_ notification:Notification) {
@@ -233,7 +234,9 @@ extension ViewController {
     
     func getKeyboardHeight(_ notification:Notification) -> CGFloat {
         let userInfo = notification.userInfo
-        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue // of CGRect
-        return keyboardSize.cgRectValue.height
+        
+        let keyboardSize = (notification.userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
+
+        return keyboardSize.height
     }
 }
