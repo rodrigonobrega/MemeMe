@@ -122,60 +122,20 @@ UINavigationControllerDelegate, UITextFieldDelegate {
         
         return memedImage
     }
-    
    
     
     func showActivityController()  -> UIActivityViewController {
-        let message = "Sharing MemeMe"
+        let message = "\nSharing my MemeMe"
         
         let objects:[AnyObject] = [message as AnyObject, memedImage!]
         
         let activityController = UIActivityViewController(activityItems: objects , applicationActivities: nil)
-        
+        self.setupLayoutToSave()
         activityController.completionWithItemsHandler = {
             activity, success, items, error in
-            if success {
-                self.save()
-            }
+            self.setupLayoutDefault()
         }
         return activityController
-    }
-    
-    
-    // MARK: Save
-    func save() {
-        if let selectedImage = imagePickerView.image {
-            
-            let alertController = UIAlertController(title: "Save", message: "Do you like to save ?", preferredStyle: .alert)
-            
-            let saveAction = UIAlertAction(title: "Save", style: .default) { (action:UIAlertAction) in
-                let topText = self.topTextField.text
-                let bottomText = self.bottomTextField.text
-                let memeObject = Meme(topTexFieldText: topText, bottomTextFieldText: bottomText, originalImage: selectedImage, memedImage: self.memedImage!)
-                self.saveMemeObject(memeObject)
-            }
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-            
-            alertController.addAction(saveAction)
-            alertController.addAction(cancelAction)
-            self.present(alertController, animated: true, completion: nil)
-            
-            
-        }
-    }
-    
-    
-    func saveMemeObject(_ memeToSave:Meme) {
-        
-        setupLayoutToSave()
-        
-        let imageData = UIImagePNGRepresentation(memeToSave.memedImage)
-        let dataImage = UIImage(data: imageData!)
-        UIImageWriteToSavedPhotosAlbum(dataImage!, nil, nil, nil)
-        UIImageWriteToSavedPhotosAlbum(dataImage!, self, #selector(imagePickerController(_:didFinishPickingMediaWithInfo:)), nil)
-
-    
-        setupLayoutDefault()
     }
    
 }
@@ -207,12 +167,6 @@ extension ViewController {
         textField.typingAttributes = typingTextAttributes
         return true
     }
-    
-//    func textFieldDidBeginEditing(_ textField: UITextField) {
-//        textField.textAlignment = .center
-//        textField.contentVerticalAlignment = .center
-//        textField.contentHorizontalAlignment = .center
-//    }
     
     // MARK: NotificationCenter
     func subscribeToKeyboardNotifications() {
