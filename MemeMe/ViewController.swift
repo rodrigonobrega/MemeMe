@@ -77,6 +77,7 @@ UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
     //MARK: @IBAction methods
     @IBAction func cancelSaveImage(_ sender: Any) {
         self.setupLayoutDefault()
+        self.shareButton.isEnabled = false
         self.imagePickerView.image  = UIImage()
         self.topTextField.text = String()
         self.bottomTextField.text = String()
@@ -107,7 +108,7 @@ UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
         self.scrollImageView.delegate = self
         self.scrollImageView.minimumZoomScale = MememeConstants.minimumZoomScale
         self.scrollImageView.maximumZoomScale = MememeConstants.maximumZoomScale
-        self.shareButton.isEnabled = false
+        
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
         self.topToolBar.isHidden = false
         self.bottomToolBar.isHidden = false
