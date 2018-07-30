@@ -18,13 +18,30 @@ UINavigationControllerDelegate, UITextFieldDelegate {
     @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var bottomTextField: UITextField!
     var memedImage:UIImage?
+    static let textFont = "HelveticaNeue-CondensedBlack"
+    static let fontSize:CGFloat = 54.0
+    static let stroke = -8.0
+    
+    let defaultTextAttributes:[NSAttributedStringKey : Any] = [
+        NSAttributedStringKey.strokeColor : UIColor.black,
+        NSAttributedStringKey.foregroundColor : UIColor.white,
+        NSAttributedStringKey.font: UIFont(name: ViewController.textFont, size: fontSize)!,
+        NSAttributedStringKey.strokeWidth : stroke
+    ]
+
+    let typingTextAttributes:[String : Any] = [
+        NSAttributedStringKey.strokeColor.rawValue : UIColor.black,
+        NSAttributedStringKey.foregroundColor.rawValue : UIColor.white,
+        NSAttributedStringKey.font.rawValue : UIFont(name: ViewController.textFont, size: fontSize)!,
+        NSAttributedStringKey.strokeWidth.rawValue : stroke
+    ]
     
     // MARK: Struct Meme used to save
     struct Meme {
+        var topTexFieldText:String!
+        var bottomTextFieldText:String!
         var originalImage: UIImage
         var memedImage: UIImage
-        
-        
     }
     
     // MARK: Override UIViewController methods
@@ -49,17 +66,38 @@ UINavigationControllerDelegate, UITextFieldDelegate {
         unsubscribeFromKeyboardNotifications()
     }
     
+    //MARK: @IBAction
+    @IBAction func cancelSaveImage(_ sender: Any) {
+        self.setupLayoutDefault()
+        self.imagePickerView.image  = UIImage()
+        self.topTextField.text = String()
+        self.bottomTextField.text = String()
+    }
     
+    @IBAction func share(_ sender: Any) {
+        memedImage = generateMemedImage()
+        self.present(self.showActivityController(), animated: true, completion: nil)
+    }
     
+    @IBAction func pickAnImageFromAlbum(_ sender: Any) {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .photoLibrary
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    @IBAction func pickAnImageFromCamera(_ sender: Any) {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .camera
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    // MARK:SetupLauyout
     func setupLayoutDefault() {
+        cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
         self.topToolBar.isHidden = false
         self.bottomToolBar.isHidden = false
-        let defaultTextAttributes:[NSAttributedStringKey : Any] = [
-            NSAttributedStringKey.strokeColor : UIColor.black,
-            NSAttributedStringKey.foregroundColor : UIColor.white,
-            NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 40),
-            NSAttributedStringKey.strokeWidth : -3.0
-        ]
         self.topTextField.attributedText = NSAttributedString(string: "TOP", attributes: defaultTextAttributes)
         self.bottomTextField.attributedText = NSAttributedString(string: "BOTTOM", attributes: defaultTextAttributes)
     }
@@ -67,7 +105,6 @@ UINavigationControllerDelegate, UITextFieldDelegate {
     func setupLayoutToSave() {
         self.topToolBar.isHidden = true
     }
-    
     
     func generateMemedImage() -> UIImage {
         
@@ -82,17 +119,7 @@ UINavigationControllerDelegate, UITextFieldDelegate {
         return memedImage
     }
     
-//    func prepareDisplayToShare(_ hidden: Bool) {
-//        UIApplication.shared.isStatusBarHidden = hidden
-//        self.topToolBar.isHidden = hidden
-//        self.bottomToolBar.isHidden = hidden
-//    }
-    
-    @IBAction func share(_ sender: Any) {
-        
-        memedImage = generateMemedImage()
-        self.present(self.showActivityController(), animated: true, completion: nil)
-    }
+   
     
     func showActivityController()  -> UIActivityViewController {
         let message = "Sharing MemeMe"
@@ -121,50 +148,28 @@ UINavigationControllerDelegate, UITextFieldDelegate {
         return activityController
     }
     
+    
+    // MARK: Save
     func save() {
         if let selectedImage = imagePickerView.image {
-            let memeObject = Meme(originalImage: selectedImage, memedImage: memedImage!)
-            saveMemeImage(selectedImage)
-            //saveIm(selectedImage)
+            let topText = self.topTextField.text
+            let bottomText = self.bottomTextField.text
+            let memeObject = Meme(topTexFieldText: topText, bottomTextFieldText: bottomText, originalImage: selectedImage, memedImage: memedImage!)
+            saveMemeImage(memeObject)
         }
-        
     }
     
     
-    func saveMemeImage(_ memeToSave:UIImage) {
+    func saveMemeImage(_ memeToSave:Meme) {
         
         setupLayoutToSave()
         
-        let imageData = UIImagePNGRepresentation(memeToSave)
+        let imageData = UIImagePNGRepresentation(memeToSave.memedImage)
         let compressedImag = UIImage(data: imageData!)
         UIImageWriteToSavedPhotosAlbum(compressedImag!, nil, nil, nil)
-//        if let constraintTopToolBarHeihtDefaultValue = constraintTopToolBarHeihtDefaultValue {
-//            self.constraintBarHeight.constant  = constraintTopToolBarHeihtDefaultValue.constant;
-//        }
-
         
     }
    
-    
-    
-    
-    
-    
-    
-
-    @IBAction func pickAnImageFromAlbum(_ sender: Any) {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .photoLibrary
-        present(imagePicker, animated: true, completion: nil)
-    }
-    
-    @IBAction func pickAnImageFromCamera(_ sender: Any) {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .camera
-        present(imagePicker, animated: true, completion: nil)
-    }
 
 }
 
@@ -190,6 +195,16 @@ extension ViewController {
         textField.resignFirstResponder()
         return true;
     }
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        textField.typingAttributes = typingTextAttributes
+        return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.textAlignment = .center
+        textField.contentVerticalAlignment = .center
+        textField.contentHorizontalAlignment = .center
+    }
     
     // MARK: NotificationCenter
     func subscribeToKeyboardNotifications() {
@@ -202,12 +217,15 @@ extension ViewController {
     }
     
     @objc func keyboardWillShow(_ notification:Notification) {
-        
-        view.frame.origin.y -= getKeyboardHeight(notification)
+        if bottomTextField.isFirstResponder {
+            view.frame.origin.y -= getKeyboardHeight(notification)
+        }
     }
     
     @objc func keyboardWillHide(_ notification:Notification) {
-        view.frame.origin.y += getKeyboardHeight(notification)
+        if bottomTextField.isFirstResponder  {
+            view.frame.origin.y += getKeyboardHeight(notification)
+        }
     }
     
     func getKeyboardHeight(_ notification:Notification) -> CGFloat {
