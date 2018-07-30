@@ -8,8 +8,9 @@
 import UIKit
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate,
-UINavigationControllerDelegate, UITextFieldDelegate {
+UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
 
+    @IBOutlet weak var scrollImageView: UIScrollView!
     @IBOutlet weak var bottomToolBar: UIToolbar!
     @IBOutlet weak var topToolBar: UIToolbar!
     @IBOutlet weak var topTextField: UITextField!
@@ -53,7 +54,7 @@ UINavigationControllerDelegate, UITextFieldDelegate {
         super.viewDidLoad()
         self.shareButton.isEnabled = false
         setupLayoutDefault()
-     //   save()
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -97,12 +98,21 @@ UINavigationControllerDelegate, UITextFieldDelegate {
     // MARK:SetupLauyout
     func setupLayoutDefault() {
         
+        self.scrollImageView.delegate = self
+        
+        self.scrollImageView.minimumZoomScale = 1.0
+        self.scrollImageView.maximumZoomScale = 5.0
+
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
         self.topToolBar.isHidden = false
         self.bottomToolBar.isHidden = false
         
         self.topTextField.attributedText = NSAttributedString(string: self.topTextField.text!, attributes: defaultTextAttributes)
         self.bottomTextField.attributedText = NSAttributedString(string: self.bottomTextField.text!, attributes: defaultTextAttributes)
+    }
+    
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return self.imagePickerView
     }
     
     func setupLayoutToSave() {

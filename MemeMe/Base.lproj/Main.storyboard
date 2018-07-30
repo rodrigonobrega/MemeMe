@@ -118,6 +118,7 @@
                         <outlet property="bottomToolBar" destination="vft-So-gx7" id="K8F-xk-Lvi"/>
                         <outlet property="cameraButton" destination="ESp-D8-RfP" id="pGH-UY-lQB"/>
                         <outlet property="imagePickerView" destination="Z00-ty-in3" id="bGk-lN-SgF"/>
+                        <outlet property="scrollImageView" destination="Mix-FP-c6H" id="4HK-HR-1As"/>
                         <outlet property="shareButton" destination="gqV-ZQ-bOQ" id="k8j-bY-ALX"/>
                         <outlet property="topTextField" destination="OBp-Vn-cVI" id="i1e-KS-dnU"/>
                         <outlet property="topToolBar" destination="8Bh-Bo-6kR" id="tF5-jC-yav"/>
