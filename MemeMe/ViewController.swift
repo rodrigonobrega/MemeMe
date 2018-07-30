@@ -51,8 +51,9 @@ UINavigationControllerDelegate, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.shareButton.isEnabled = false
         setupLayoutDefault()
-        save()
+     //   save()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -95,6 +96,7 @@ UINavigationControllerDelegate, UITextFieldDelegate {
     
     // MARK:SetupLauyout
     func setupLayoutDefault() {
+        
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
         self.topToolBar.isHidden = false
         self.bottomToolBar.isHidden = false
@@ -104,6 +106,7 @@ UINavigationControllerDelegate, UITextFieldDelegate {
     
     func setupLayoutToSave() {
         self.topToolBar.isHidden = true
+        self.bottomToolBar.isHidden = true
     }
     
     func generateMemedImage() -> UIImage {
@@ -143,7 +146,6 @@ UINavigationControllerDelegate, UITextFieldDelegate {
             alertController.addAction(saveAction)
             alertController.addAction(cancelAction)
             self.present(alertController, animated: true, completion: nil)
-            
         }
         return activityController
     }
@@ -155,12 +157,12 @@ UINavigationControllerDelegate, UITextFieldDelegate {
             let topText = self.topTextField.text
             let bottomText = self.bottomTextField.text
             let memeObject = Meme(topTexFieldText: topText, bottomTextFieldText: bottomText, originalImage: selectedImage, memedImage: memedImage!)
-            saveMemeImage(memeObject)
+            saveMemeObject(memeObject)
         }
     }
     
     
-    func saveMemeImage(_ memeToSave:Meme) {
+    func saveMemeObject(_ memeToSave:Meme) {
         
         setupLayoutToSave()
         
@@ -168,9 +170,9 @@ UINavigationControllerDelegate, UITextFieldDelegate {
         let compressedImag = UIImage(data: imageData!)
         UIImageWriteToSavedPhotosAlbum(compressedImag!, nil, nil, nil)
         
+        setupLayoutDefault()
     }
    
-
 }
 
 extension ViewController {
@@ -179,6 +181,7 @@ extension ViewController {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
             imagePickerView.image = image;
+            self.shareButton.isEnabled = true
         }
         dismiss(animated: true, completion: nil)
     }
