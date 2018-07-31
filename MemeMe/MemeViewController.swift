@@ -7,10 +7,10 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate,
+class MemeViewController: UIViewController, UIImagePickerControllerDelegate,
 UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
 
-    // MARK: @IBOutlet and variables
+    // MARK: - @IBOutlet and variables
     @IBOutlet weak var scrollImageView: UIScrollView!
     @IBOutlet weak var bottomToolBar: UIToolbar!
     @IBOutlet weak var topToolBar: UIToolbar!
@@ -35,7 +35,7 @@ UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
         NSAttributedStringKey.strokeWidth.rawValue : MememeConstants.stroke
     ]
     
-    // MARK: Struct Meme used to save and Struct constants values
+    // MARK: - Struct Meme used to save and Struct constants values
     struct Meme {
         var topTexFieldText:String!
         var bottomTextFieldText:String!
@@ -52,7 +52,7 @@ UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
         static let maximumZoomScale:CGFloat = 5.0
     }
     
-    // MARK: Override UIViewController methods
+    // MARK: - Override UIViewController methods
     override var prefersStatusBarHidden: Bool {
         return true
     }
@@ -60,13 +60,13 @@ UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.shareButton.isEnabled = false
+        cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
         setupLayoutDefault()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         subscribeToKeyboardNotifications()
-        cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -74,7 +74,7 @@ UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
         unsubscribeFromKeyboardNotifications()
     }
     
-    //MARK: @IBAction methods
+    //MARK: - @IBAction methods
     @IBAction func cancelSaveImage(_ sender: Any) {
         self.setupLayoutDefault()
         self.shareButton.isEnabled = false
@@ -88,21 +88,24 @@ UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
         self.present(self.showActivityController(), animated: true, completion: nil)
     }
     
-    @IBAction func pickAnImageFromAlbum(_ sender: Any) {
+    @IBAction func pickAnImage(_ sender: Any) {
+        if let button = sender as? UIBarButtonItem {
+            if button.isEqual(self.cameraButton) {
+                pickAnImageFromSourceType(.camera)
+            } else {
+                pickAnImageFromSourceType(.photoLibrary)
+            }
+        }
+    }
+    
+    func pickAnImageFromSourceType(_ sourceType: UIImagePickerControllerSourceType) {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
-        imagePicker.sourceType = .photoLibrary
+        imagePicker.sourceType = sourceType
         present(imagePicker, animated: true, completion: nil)
     }
     
-    @IBAction func pickAnImageFromCamera(_ sender: Any) {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .camera
-        present(imagePicker, animated: true, completion: nil)
-    }
-    
-    // MARK: Configure Layout methods
+    // MARK: - Configure Layout methods
     func setupLayoutDefault() {
         
         self.scrollImageView.delegate = self
@@ -123,8 +126,8 @@ UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
    
 }
 
-extension ViewController {
-    // MARK: UIImagePickerControllerDelegate
+extension MemeViewController {
+    // MARK: - UIImagePickerControllerDelegate
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
@@ -138,15 +141,15 @@ extension ViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    // MARK: UIScrollViewDelegate
+    // MARK: - UIScrollViewDelegate
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.imagePickerView
     }
 }
 
-extension ViewController {
+extension MemeViewController {
     
-    // MARK: UITextFieldDelegate
+    // MARK: - UITextFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true;
@@ -159,9 +162,9 @@ extension ViewController {
     
 }
 
-extension ViewController {
+extension MemeViewController {
     
-    // MARK: NotificationCenter methods
+    // MARK: - NotificationCenter methods
     func subscribeToKeyboardNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
@@ -172,7 +175,7 @@ extension ViewController {
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
     }
     
-    // MARK: keyboard methods
+    // MARK: - keyboard methods
     @objc func keyboardWillShow(_ notification:Notification) {
         if bottomTextField.isFirstResponder {
             view.frame.origin.y -= getKeyboardHeight(notification)
@@ -181,7 +184,7 @@ extension ViewController {
     
     @objc func keyboardWillHide(_ notification:Notification) {
         if bottomTextField.isFirstResponder  {
-            view.frame.origin.y += getKeyboardHeight(notification)
+            view.frame.origin.y = 0
         }
     }
     
@@ -212,7 +215,9 @@ extension ViewController {
         self.setupLayoutToSave()
         activityController.completionWithItemsHandler = {
             activity, success, items, error in
-            self.setupLayoutDefault()
+            if success {
+                self.setupLayoutDefault()
+            }
         }
         return activityController
     }
