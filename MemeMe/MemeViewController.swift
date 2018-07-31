@@ -19,7 +19,7 @@ UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
     @IBOutlet weak var imagePickerView: UIImageView!
     @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var bottomTextField: UITextField!
-    var memedImage:UIImage?
+    var meme:Meme?
     
     let defaultTextAttributes:[NSAttributedStringKey : Any] = [
         NSAttributedStringKey.strokeColor : UIColor.black,
@@ -84,7 +84,6 @@ UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
     }
     
     @IBAction func share(_ sender: Any) {
-        memedImage = generateMemedImage()
         self.present(self.showActivityController(), animated: true, completion: nil)
     }
     
@@ -210,12 +209,14 @@ extension MemeViewController {
     
     // show a Activity View Controller to share image
     func showActivityController()  -> UIActivityViewController {
-        let objects:[AnyObject] = [MememeConstants.messageActivityShare as AnyObject, memedImage!]
+        let memedImage = generateMemedImage()
+        let objects:[AnyObject] = [MememeConstants.messageActivityShare as AnyObject, memedImage]
         let activityController = UIActivityViewController(activityItems: objects , applicationActivities: nil)
         self.setupLayoutToSave()
         activityController.completionWithItemsHandler = {
             activity, success, items, error in
             if success {
+                self.meme = Meme(topTexFieldText: self.topTextField.text!, bottomTextFieldText: self.bottomTextField.text!, originalImage: self.imagePickerView.image!, memedImage: memedImage)
                 self.setupLayoutDefault()
             }
         }
