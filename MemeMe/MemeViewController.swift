@@ -7,13 +7,7 @@
 
 import UIKit
 
-// MARK: - Struct Meme used to save and Struct constants values
-struct Meme {
-    var top:String!
-    var bottom:String!
-    var image: UIImage
-    var memedImage: UIImage
-}
+
 
 class MemeViewController: UIViewController, UIImagePickerControllerDelegate,
 UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
@@ -227,11 +221,23 @@ extension MemeViewController {
     
     func save(memedImage: UIImage) {
         
-        let meme = Meme(top: topTextField.text!, bottom: bottomTextField.text!, image: imagePickerView.image!, memedImage: memedImage)
+        let image64:Data = self.base64StringFromImage(image: imagePickerView.image!)
+        let memedImage64:Data = self.base64StringFromImage(image: imagePickerView.image!)
         
+        let meme = Meme.init(top: topTextField.text!,
+                        bottom: bottomTextField.text!,
+                        image: imagePickerView.image!,
+                        memedImage: memedImage
+                        )
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
             appDelegate.save(meme: meme)
         }
         
+    }
+    
+    func base64StringFromImage (image:UIImage) -> Data {
+        let imageData:Data =  UIImagePNGRepresentation(image)!
+//        let base64String = imageData.base64EncodedString()
+        return imageData
     }
 }

@@ -10,6 +10,8 @@ import UIKit
 
 class SentMemesTableViewController: UITableViewController {
 
+    private let reuseIdentifier = "MemesTableViewCell"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -38,19 +40,25 @@ class SentMemesTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
+        
+        return memes().count
+    }
+    
+    func memes() -> [Meme] {
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            return appDelegate.memes.count
+            return appDelegate.memes
         }
-        return 0
+        return [Meme]()
     }
 
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "mememeCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier)
+//        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
 
-        cell.detailTextLabel?.text = "\(indexPath.row)"
+        
+        cell?.textLabel?.text = "\(indexPath.row)"
 
-        return cell
+        return cell!
     }
     
 
