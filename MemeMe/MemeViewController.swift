@@ -7,6 +7,14 @@
 
 import UIKit
 
+// MARK: - Struct Meme used to save and Struct constants values
+struct Meme {
+    var top:String!
+    var bottom:String!
+    var image: UIImage
+    var memedImage: UIImage
+}
+
 class MemeViewController: UIViewController, UIImagePickerControllerDelegate,
 UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
 
@@ -35,13 +43,7 @@ UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
         NSAttributedStringKey.strokeWidth.rawValue : MememeConstants.stroke
     ]
     
-    // MARK: - Struct Meme used to save and Struct constants values
-    struct Meme {
-        var topTexFieldText:String!
-        var bottomTextFieldText:String!
-        var originalImage: UIImage
-        var memedImage: UIImage
-    }
+    // MARK: - Struct constants values
     
     struct MememeConstants{
         static let textFont = "HelveticaNeue-CondensedBlack"
@@ -216,10 +218,20 @@ extension MemeViewController {
         activityController.completionWithItemsHandler = {
             activity, success, items, error in
             if success {
-                self.meme = Meme(topTexFieldText: self.topTextField.text!, bottomTextFieldText: self.bottomTextField.text!, originalImage: self.imagePickerView.image!, memedImage: memedImage)
+                self.save(memedImage: memedImage)
                 self.setupLayoutDefault()
             }
         }
         return activityController
+    }
+    
+    func save(memedImage: UIImage) {
+        
+        let meme = Meme(top: topTextField.text!, bottom: bottomTextField.text!, image: imagePickerView.image!, memedImage: memedImage)
+        
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            appDelegate.save(meme: meme)
+        }
+        
     }
 }
