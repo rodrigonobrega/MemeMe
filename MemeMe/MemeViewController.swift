@@ -80,7 +80,8 @@ UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
     }
     
     @IBAction func share(_ sender: Any) {
-        self.present(self.showActivityController(), animated: true, completion: nil)
+        
+        self.present(self.showActivityController(), animated: true)
     }
     
     @IBAction func pickAnImage(_ sender: Any) {
@@ -209,13 +210,25 @@ extension MemeViewController {
         let objects:[AnyObject] = [MememeConstants.messageActivityShare as AnyObject, memedImage]
         let activityController = UIActivityViewController(activityItems: objects , applicationActivities: nil)
         self.setupLayoutToSave()
-        activityController.completionWithItemsHandler = {
-            activity, success, items, error in
-            if success {
-                self.save(memedImage: memedImage)
-                self.setupLayoutDefault()
+        
+        activityController.completionWithItemsHandler = { (activityType, completed:Bool, returnedItems:[Any]?, error: Error?) in
+            if completed {
+                activityController.dismiss(animated: true, completion: {
+                    self.navigationController?.popToRootViewController(animated: true)
+                })
             }
         }
+        
+//        activityController.completionWithItemsHandler = {
+//            activity, success, items, error in
+//            if success {
+//                self.save(memedImage: memedImage)
+//                activityController.dismiss(animated: true, completion: {
+//                    self.navigationController?.popToRootViewController(animated: true)
+//                })
+//
+//            }
+//        }
         return activityController
     }
     
