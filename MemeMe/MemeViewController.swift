@@ -221,23 +221,19 @@ extension MemeViewController {
     
     func save(memedImage: UIImage) {
         
-        let image64:Data = self.base64StringFromImage(image: imagePickerView.image!)
-        let memedImage64:Data = self.base64StringFromImage(image: imagePickerView.image!)
-        
         let meme = Meme.init(top: topTextField.text!,
                         bottom: bottomTextField.text!,
                         image: imagePickerView.image!,
-                        memedImage: memedImage
-                        )
+                        memedImage: memedImage)
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
             appDelegate.save(meme: meme)
         }
         
     }
     
-    func base64StringFromImage (image:UIImage) -> Data {
-        let imageData:Data =  UIImagePNGRepresentation(image)!
-//        let base64String = imageData.base64EncodedString()
-        return imageData
-    }
+//    func base64StringFromImage (image:UIImage) -> Data {
+//        let imageData:Data =  UIImagePNGRepresentation(image)!
+////        let base64String = imageData.base64EncodedString()
+//        return imageData
+//    }
 }

@@ -40,6 +40,7 @@ class SentMemesCollectionViewController: UICollectionViewController {
         let space:CGFloat = 3.0
         let dimension = (view.frame.size.width - (2 * space)) / 3.0
         
+        
         self.flowLayout.minimumInteritemSpacing = space
         self.flowLayout.minimumLineSpacing = space
         self.flowLayout.itemSize = CGSize(width: dimension, height: dimension)
@@ -82,7 +83,7 @@ class SentMemesCollectionViewController: UICollectionViewController {
     
         // Configure the cell
         cell.backgroundColor = UIColor.red
-        cell.image.image = memes()[indexPath.row].image
+        cell.image.image = memes()[indexPath.row].memedImage
     
         return cell
     }
