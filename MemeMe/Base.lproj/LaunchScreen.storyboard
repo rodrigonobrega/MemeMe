@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="K7A-3j-70c">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MemeMe" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PdH-U8-vW7">
                                 <rect key="frame" x="151" y="523" width="72" height="21"/>
@@ -32,10 +32,10 @@
                         <constraints>
                             <constraint firstItem="PdH-U8-vW7" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="200" id="88e-dX-jTk"/>
                             <constraint firstItem="PdH-U8-vW7" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Aft-a6-m2J"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="K7A-3j-70c" secondAttribute="bottom" id="ijR-G8-pFb"/>
-                            <constraint firstItem="K7A-3j-70c" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="mjA-Df-h3c"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="K7A-3j-70c" secondAttribute="trailing" id="nbz-Jo-Y1P"/>
-                            <constraint firstItem="K7A-3j-70c" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="sgn-Da-iOt"/>
+                            <constraint firstAttribute="bottom" secondItem="K7A-3j-70c" secondAttribute="bottom" id="Vm7-Y5-18V"/>
+                            <constraint firstAttribute="trailing" secondItem="K7A-3j-70c" secondAttribute="trailing" id="ZXG-3p-9kq"/>
+                            <constraint firstItem="K7A-3j-70c" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="c0k-11-73U"/>
+                            <constraint firstItem="K7A-3j-70c" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="lUP-ay-Uoo"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
