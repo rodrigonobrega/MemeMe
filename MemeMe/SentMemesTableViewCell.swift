@@ -11,18 +11,14 @@ import UIKit
 class SentMemesTableViewCell: UITableViewCell {
 
     @IBOutlet weak var imageMemed: UIImageView!
+    @IBOutlet weak var labelDescription:UILabel!
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    var meme:Meme? {
+        didSet {
+            self.imageMemed.image = meme?.image
+            self.labelDescription.text = "\(meme!.top!) ... \(meme!.bottom!)"
+        }
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
     
 
 }

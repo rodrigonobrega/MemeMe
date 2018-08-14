@@ -9,15 +9,6 @@
 import UIKit
 
 /// MARK: - Struct Meme used to save and Struct constants values
-//
-//struct Meme {
-//    var top:String!
-//    var bottom:String!
-//    var image: UIImage
-//    var memedImage: UIImage
-//    var imageData:Data!
-//    var memedImageData:Data!
-//}
 
 class Meme: NSObject, NSCoding {
 
@@ -25,43 +16,33 @@ class Meme: NSObject, NSCoding {
     var bottom:String!
     var image: UIImage!
     var memedImage: UIImage!
-//    var imageData:Data!
-//    var memedImageData:Data!
     
-    init(top: String,
-        bottom: String,
-        image: UIImage,
-        memedImage: UIImage
-        
-        ) {
+    private static let kTopKey = "top"
+    private static let kBottomKey = "bottom"
+    private static let kImageKey = "image"
+    private static let kMemedImageKey = "memedImage"
+    
+    init(top: String, bottom: String, image: UIImage, memedImage: UIImage) {
         self.top = top
         self.bottom = bottom
         self.image = image
         self.memedImage = memedImage
-//        self.imageData = imageData
-//        self.memedImageData = memedImageData
     }
-    
     
     required convenience init(coder aDecoder: NSCoder) {
         
-        let top = aDecoder.decodeObject(forKey: "top") as! String
-        let bottom = aDecoder.decodeObject(forKey: "bottom") as! String
-        let image = aDecoder.decodeObject(forKey: "image") as! UIImage
-        let memedImage = aDecoder.decodeObject(forKey: "memedImage") as! UIImage
-//        let imageData = aDecoder.decodeObject(forKey: "imageData") as! Data
-//        let memedImageData = aDecoder.decodeObject(forKey: "memedImageData") as! Data
-        
-        
-        self.init(top: top, bottom: bottom, image: image, memedImage: memedImage)//, imageData: imageData, memedImageData: memedImageData)
+        let top = aDecoder.decodeObject(forKey: Meme.kTopKey) as! String
+        let bottom = aDecoder.decodeObject(forKey: Meme.kBottomKey) as! String
+        let image = aDecoder.decodeObject(forKey: Meme.kImageKey) as! UIImage
+        let memedImage = aDecoder.decodeObject(forKey: Meme.kMemedImageKey) as! UIImage
+
+        self.init(top: top, bottom: bottom, image: image, memedImage: memedImage)
     }
     
     func encode(with aCoder: NSCoder){
-        aCoder.encode(top, forKey: "top")
-        aCoder.encode(bottom, forKey: "bottom")
-        aCoder.encode(image, forKey: "image")
-        aCoder.encode(memedImage, forKey: "memedImage")
-        //aCoder.encode(imageData, forKey: "imageData")
-//        aCoder.encode(memedImageData, forKey: "memedImageData")
+        aCoder.encode(top, forKey: Meme.kTopKey)
+        aCoder.encode(bottom, forKey: Meme.kBottomKey)
+        aCoder.encode(image, forKey: Meme.kImageKey)
+        aCoder.encode(memedImage, forKey: Meme.kMemedImageKey)
     }
 }

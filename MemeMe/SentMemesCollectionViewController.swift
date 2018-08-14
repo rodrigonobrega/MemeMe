@@ -14,7 +14,6 @@ class SentMemesCollectionViewController: UICollectionViewController {
     
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
 
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.collectionView?.reloadData()
@@ -26,13 +25,10 @@ class SentMemesCollectionViewController: UICollectionViewController {
         var space:CGFloat = 3.0
         var dimension = (view.frame.size.width - (2 * space)) / 3.0
         
-        
         if (!UIDeviceOrientationIsPortrait(UIDevice.current.orientation)) {
-            
             space = 1.0
             dimension = (view.frame.size.width - (1 * space)) / 5
         }
-        
         
         self.flowLayout.minimumInteritemSpacing = space
         self.flowLayout.minimumLineSpacing = space
@@ -43,31 +39,27 @@ class SentMemesCollectionViewController: UICollectionViewController {
     // MARK: UICollectionViewDataSource
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            return appDelegate.memes.count
-        }
-        return 0
+        return AppDelegate.memes().count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! SentMemesCollectionViewCell
-        cell.image.image = memes()[indexPath.row].memedImage
-    
+        cell.meme = AppDelegate.memes()[indexPath.row]
         return cell
     }
     
-    func memes() -> [Meme] {
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            return appDelegate.memes
-        }
-        return [Meme]()
-    }
+//    func memes() -> [Meme] {
+//        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+//            return appDelegate.memes
+//        }
+//        return [Meme]()
+//    }
     
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let detailController = segue.destination as? DetailViewController
-        detailController?.meme = self.memes()[(self.collectionView?.indexPathsForSelectedItems?.first?.row)!]
+        detailController?.meme = AppDelegate.memes()[(self.collectionView?.indexPathsForSelectedItems?.first?.row)!]
     }
 
 }

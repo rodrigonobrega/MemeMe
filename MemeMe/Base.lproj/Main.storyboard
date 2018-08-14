@@ -176,6 +176,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="imageMemed" destination="t3R-kx-ZRL" id="byL-0H-gPR"/>
+                                    <outlet property="labelDescription" destination="ZTA-M6-03R" id="7uP-3D-ien"/>
                                     <segue destination="mIw-C0-4Io" kind="show" id="uaL-90-Reh"/>
                                 </connections>
                             </tableViewCell>
@@ -343,7 +344,7 @@
         <image name="tab_table_icon" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="efg-1F-jca"/>
+        <segue reference="uaL-90-Reh"/>
         <segue reference="2VN-sD-uGJ"/>
     </inferredMetricsTieBreakers>
 </document>

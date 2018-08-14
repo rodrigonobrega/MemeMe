@@ -7,8 +7,6 @@
 
 import UIKit
 
-
-
 class MemeViewController: UIViewController, UIImagePickerControllerDelegate,
 UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
 
@@ -77,12 +75,9 @@ UINavigationControllerDelegate, UITextFieldDelegate, UIScrollViewDelegate {
         self.imagePickerView.image  = UIImage()
         self.topTextField.text = String()
         self.bottomTextField.text = String()
-        dismiss()
-    }
-    
-    func dismiss() {
         self.dismiss(animated: true, completion: nil)
     }
+    
     
     @IBAction func share(_ sender: Any) {
         
@@ -220,41 +215,24 @@ extension MemeViewController {
             if completed {
                 activityController.dismiss(animated: true)
                 self.save(memedImage: memedImage)
-                self.dismiss()
-                
+                self.dismiss(animated: true, completion: nil)
             } else {
                 self.setupLayoutDefault()
             }
         }
         
-//        activityController.completionWithItemsHandler = {
-//            activity, success, items, error in
-//            if success {
-//                self.save(memedImage: memedImage)
-//                activityController.dismiss(animated: true, completion: {
-//                    self.navigationController?.popToRootViewController(animated: true)
-//                })
-//
-//            }
-//        }
         return activityController
     }
     
     func save(memedImage: UIImage) {
-        
-        let meme = Meme.init(top: topTextField.text!,
-                        bottom: bottomTextField.text!,
-                        image: imagePickerView.image!,
-                        memedImage: memedImage)
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            let meme = Meme.init(top: topTextField.text!,
+                                 bottom: bottomTextField.text!,
+                                 image: imagePickerView.image!,
+                                 memedImage: memedImage)
             appDelegate.save(meme: meme)
         }
         
     }
     
-//    func base64StringFromImage (image:UIImage) -> Data {
-//        let imageData:Data =  UIImagePNGRepresentation(image)!
-////        let base64String = imageData.base64EncodedString()
-//        return imageData
-//    }
 }
