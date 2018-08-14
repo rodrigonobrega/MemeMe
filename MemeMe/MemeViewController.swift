@@ -222,6 +222,8 @@ extension MemeViewController {
                 self.save(memedImage: memedImage)
                 self.dismiss()
                 
+            } else {
+                self.setupLayoutDefault()
             }
         }
         
