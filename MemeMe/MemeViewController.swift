@@ -213,9 +213,10 @@ extension MemeViewController {
         
         activityController.completionWithItemsHandler = { (activityType, completed:Bool, returnedItems:[Any]?, error: Error?) in
             if completed {
-                activityController.dismiss(animated: true, completion: {
-                    self.navigationController?.popToRootViewController(animated: true)
-                })
+                activityController.dismiss(animated: true)
+                self.save(memedImage: memedImage)
+                self.navigationController?.popToRootViewController(animated: true)
+                
             }
         }
         
