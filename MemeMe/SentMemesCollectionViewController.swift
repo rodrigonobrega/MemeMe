@@ -21,7 +21,12 @@ class SentMemesCollectionViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupLayout()
+    }
+    
+    // MARK - setup flow layout for collectionView
+    
+    fileprivate func setupLayout() {
         var space:CGFloat = 3.0
         var dimension = (view.frame.size.width - (2 * space)) / 3.0
         
@@ -33,9 +38,8 @@ class SentMemesCollectionViewController: UICollectionViewController {
         self.flowLayout.minimumInteritemSpacing = space
         self.flowLayout.minimumLineSpacing = space
         self.flowLayout.itemSize = CGSize(width: dimension, height: dimension)
-        
     }
-
+    
     // MARK: UICollectionViewDataSource
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -48,12 +52,6 @@ class SentMemesCollectionViewController: UICollectionViewController {
         return cell
     }
     
-//    func memes() -> [Meme] {
-//        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-//            return appDelegate.memes
-//        }
-//        return [Meme]()
-//    }
     
     // MARK: - Navigation
     

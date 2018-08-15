@@ -13,7 +13,6 @@ class SentMemesTableViewController: UITableViewController {
     private let reuseIdentifier = "MemesTableViewCell"
     private let detailViewControllerIdentifier = "detailViewControllerID"
     
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.tableView.reloadData()
@@ -25,8 +24,6 @@ class SentMemesTableViewController: UITableViewController {
         return AppDelegate.memes().count
     }
     
-
-
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier) as! SentMemesTableViewCell
         cell.meme = AppDelegate.memes()[indexPath.row]

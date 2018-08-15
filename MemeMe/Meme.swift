@@ -29,6 +29,8 @@ class Meme: NSObject, NSCoding {
         self.memedImage = memedImage
     }
     
+    
+    // MARK: - Using NSCoding for tests, saving NSData in UserDefaults
     required convenience init(coder aDecoder: NSCoder) {
         
         let top = aDecoder.decodeObject(forKey: Meme.kTopKey) as! String

@@ -9,11 +9,12 @@
 import UIKit
 
 class SentMemesCollectionViewCell: UICollectionViewCell {
+    
     @IBOutlet weak var image: UIImageView!
     
     var meme:Meme? {
         didSet {
-            self.image.image = meme?.image
+            self.image.image = meme?.memedImage
         }
     }
 }

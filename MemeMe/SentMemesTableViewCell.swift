@@ -15,7 +15,7 @@ class SentMemesTableViewCell: UITableViewCell {
 
     var meme:Meme? {
         didSet {
-            self.imageMemed.image = meme?.image
+            self.imageMemed.image = meme?.memedImage
             self.labelDescription.text = "\(meme!.top!) ... \(meme!.bottom!)"
         }
     }

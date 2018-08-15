@@ -24,12 +24,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    // MARK: - Use UserDefaults to simulate a database
     func save(meme: Meme) {
         self.memes.append(meme)
         saveMemeInUserDefaults()
     }
     
-    // MARK: - Use UserDefaults to simulate a database
     func saveMemeInUserDefaults(){
         let encodedData = NSKeyedArchiver.archivedData(withRootObject: memes)
         UserDefaults.standard.set(encodedData, forKey: kMemesKey)

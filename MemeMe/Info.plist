@@ -37,7 +37,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Tirar uma nova foto para utilizar no MemeMe</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>fasdf jkh j khjk hjkh </string>
+	<string>Use to save memes</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Selecionar uma foto no album para utilizar no MemeMe</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
